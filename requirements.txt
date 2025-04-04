@@ -1,0 +1,18 @@
+pandas
+numpy
+scikit-learn
+dataclasses
+joblib
+os-sys
+scipy
+matplotlib
+seaborn
+catboost
+xgboost
+dill
+
+crewai
+langchain_google_genai # google gemini models
+load_dotenv
+
+crewai_tools

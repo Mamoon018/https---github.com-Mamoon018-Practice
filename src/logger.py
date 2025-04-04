@@ -1,0 +1,53 @@
+
+import logging
+import os
+from datetime import datetime
+
+LOG_FILE = f"{datetime.now().strftime('%m_%d_%Y_%H_%M_%S')}.log"
+logs_dir = os.path.join(os.getcwd(), 'logs')
+os.makedirs(logs_dir, exist_ok=True)
+log_file_path = os.path.join(logs_dir, LOG_FILE)
+
+logging.basicConfig(
+    filename=log_file_path,
+    format="[ %(asctime)s ] %(lineno)d %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+)
+
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)
+formatter = logging.Formatter("[ %(asctime)s ] %(name)s - %(levelname)s - %(message)s")
+console_handler.setFormatter(formatter)
+logging.getLogger().addHandler(console_handler)
+
+logging.info("logger configured successfully")
+
+
+
+
+
+
+#import logging 
+#import os 
+#from datetime import datetime
+
+#LOG_FILE = f"{datetime.now().strftime('%m_%d_%Y_%H_%M_%S')}.log"
+#logs_path = os.path.join(os.getcwd(),'logs', LOG_FILE)
+#os.makedirs(logs_path,exist_ok=True)
+
+#log_file_path = os.path.join(logs_path,LOG_FILE)
+
+#logging.basicConfig(
+ #           filename = log_file_path,
+  #          format = "[ %(asctime)s ] %(lineno)d %(name)s - %(levelname)s - %(message)s",
+   #         level = logging.INFO,
+
+#                    )
+
+#console_handler = logging.StreamHandler()
+#console_handler.setLevel(logging.INFO)
+#formatter = logging.Formatter("[ %(asctime)s ] %(name)s - %(levelname)s - %(message)s")
+#onsole_handler.setFormatter(formatter)
+#logging.getLogger().addHandler(console_handler)
+
+#logging.info("Logger configured successfully")
