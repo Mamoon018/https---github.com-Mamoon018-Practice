@@ -49,17 +49,20 @@ The data_transformation.py file handles data preprocessing and feature engineeri
 Defines the path for saving the preprocessing object: artifacts/preprocessing.pkl.
 
 # Custom Transformers
-feature_engineering: Adds features like Remaining Useful Life (RUL), rolling statistics, and delta columns based on sensor data.
-sd_outlier_removal: Removes outliers in specified sensor columns using standard deviation (3σ rule).
-IQR_outlier_removal: Removes outliers in select sensor columns using the Interquartile Range (IQR) method.
-imputing_Nan_using_KNN: Imputes missing values in numerical columns using KNN with highly correlated features.
+
+1) feature_engineering: Adds features like Remaining Useful Life (RUL), rolling statistics, and delta columns based on sensor data.
+2) sd_outlier_removal: Removes outliers in specified sensor columns using standard deviation (3σ rule).
+3) IQR_outlier_removal: Removes outliers in select sensor columns using the Interquartile Range (IQR) method.
+4) imputing_Nan_using_KNN: Imputes missing values in numerical columns using KNN with highly correlated features.
 
 # Main Class: data_transformation
-get_datapreprocessing(): Builds a preprocessing pipeline with outlier removal, KNN imputation, and scaling for numerical columns.
+
+1) get_datapreprocessing(): Builds a preprocessing pipeline with outlier removal, KNN imputation, and scaling for numerical columns.
+
 transform_data(train_data, test_data):
-Reads train and test CSV files.
-Applies feature engineering and preprocessing.
-Returns transformed train and test arrays with RUL as the target, and saves the preprocessor.
+1) Reads train and test CSV files.
+2) Applies feature engineering and preprocessing.
+3) Returns transformed train and test arrays with RUL as the target, and saves the preprocessor.
 
 # Dependencies
 numpy, pandas: Data manipulation.
@@ -85,11 +88,12 @@ The model_trainer.py file manages the training, evaluation, and selection of mac
 Defines the path for saving the trained model: artifacts/model.pkl.
 
 # Main Class: ModelTrainer
-initiaing_model_trainer(train_array, test_array, rul):
-Splits input arrays into features (X_train, X_test) and targets (Y_train, Y_test using RUL).
-Defines a set of regression models and their hyperparameter grids.
-Evaluates models using the evaluate_models utility and selects the best performer based on R² score.
-Saves the best model and returns its accuracy, name, score, instance, and full report.
+
+1) initiaing_model_trainer(train_array, test_array, rul):
+2) Splits input arrays into features (X_train, X_test) and targets (Y_train, Y_test using RUL).
+3) Defines a set of regression models and their hyperparameter grids.
+4) Evaluates models using the evaluate_models utility and selects the best performer based on R² score.
+5) Saves the best model and returns its accuracy, name, score, instance, and full report.
 
 # Models and Tuning
 Models: CNN-LSTM (Keras), K-Neighbors, XGBoost, CatBoost, AdaBoost, Gradient Boosting, Random Forest, Decision Tree.
