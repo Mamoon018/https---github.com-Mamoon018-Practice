@@ -1,1 +1,1 @@
-okok
+C:\Users\Hp\anaconda3\envs\venv\python.exe -m streamlit run streamlitapp.py

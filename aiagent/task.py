@@ -1,7 +1,7 @@
 
 from crewai import Task
-from tools import tool 
-from agents import Researcher_Analyst, Analyst_expert
+from .tools import tool 
+from .agents import Researcher_Analyst, Analyst_expert
  
 # Research Task 
 research_task = Task(

@@ -3,7 +3,7 @@
 # which gemini models we will be using ?
 
 from crewai import Agent
-from tools import tool 
+from .tools import tool 
 from dotenv import load_dotenv
 load_dotenv()
 from langchain_google_genai import ChatGoogleGenerativeAI

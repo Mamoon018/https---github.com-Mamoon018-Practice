@@ -1,3 +1,22 @@
+import sys
+import os
+
+project_root = "C:/Users/Hp/Projects/Timeseriesproject"
+sys.path.append(project_root)
+
+# Debug: Print the sys.path to see where Python is looking for modules
+print("sys.path:", sys.path)
+
+# Debug: Check if the aiagent directory exists in the project root
+aiagent_path = os.path.join(project_root, "aiagent")
+print("aiagent directory exists:", os.path.exists(aiagent_path))
+
+# Debug: Check if executor.py exists
+executor_path = os.path.join(project_root, "aiagent", "executer.py")
+print("executer.py exists:", os.path.exists(executor_path))
+
+# Now try the import
+from aiagent.executer import run_agent_crew
 
 import streamlit as st
 import pandas as pd
@@ -6,8 +25,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import joblib
 import plotly.express as px
-import sys 
-import os 
+
 
 project_root = "C:/Users/Hp/Projects/Timeseriesproject"
 sys.path.append(project_root)
@@ -59,3 +77,27 @@ if st.button("Predict RUL"):
     # Make prediction
     prediction = model.predict(input_processed)
     st.success(f"Predicted RUL: {prediction[0]:.2f} cycles")
+
+
+if st.button("Predict RUL"):
+    # ... (existing code to predict)
+    st.success(f"Predicted RUL: {prediction[0]:.2f} cycles")
+    
+    # Optional: Trigger agents right after prediction
+    run_agents = st.checkbox("Get Analysis by AI Agents")
+    
+    if run_agents:
+        with st.spinner("Running AI agents for failure analysis and mitigation strategies..."):
+            agent_output = run_agent_crew(str(round(prediction[0])))
+        st.subheader("AI Agent Insights")
+        st.markdown(agent_output)
+
+
+
+
+#import sys
+#print('\n\n\n')
+#print(f"Python executable: {sys.executable}")
+
+#print(f"Python version: {sys.version}")
+#print('\n\n\n')
