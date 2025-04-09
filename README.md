@@ -18,14 +18,14 @@ Contains the core method initiate_data_ingestion() for data loading and saving.
 
 # Method: initiate_data_ingestion()
 
-Input: Reads raw data from Notebook/Data/train_FD001.txt and Notebook/Data/test_FD001.txt using pandas, assuming whitespace-delimited text files without headers.
+1) Input: Reads raw data from Notebook/Data/train_FD001.txt and Notebook/Data/test_FD001.txt using pandas, assuming whitespace-delimited text files without headers.
 
-Process:Creates the artifacts directory if it doesn’t exist.
-Saves the train and test datasets as CSV files with headers in the specified paths.
+2) Process:Creates the artifacts directory if it doesn’t exist.
+3) Saves the train and test datasets as CSV files with headers in the specified paths.
 
-Output: Returns the file paths of the saved train and test CSV files.
+4) Output: Returns the file paths of the saved train and test CSV files.
 
-Notes: The code assumes pre-split train and test datasets, so no additional train-test splitting is performed (commented-out section).
+5) Notes: The code assumes pre-split train and test datasets, so no additional train-test splitting is performed (commented-out section).
 
 
 # Error Handling
@@ -34,11 +34,10 @@ Logs key steps and exceptions using the logging module from src.logger.
 
 # Execution Block
 When run as a standalone script (if __name__ == "__main__":), it:
-1: Instantiates the dataingestion class.
 
-2: Executes the ingestion process.
-
-3: Passes the resulting train and test data paths to the data_transformation and model_trainer components for further processing.
+1) Instantiates the dataingestion class.
+2) Executes the ingestion process.
+3) Passes the resulting train and test data paths to the data_transformation and model_trainer components for further processing.
 
         ## Data_Transformation.py ## 
 
