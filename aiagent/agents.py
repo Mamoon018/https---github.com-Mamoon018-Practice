@@ -1,7 +1,4 @@
 
-# Which tools we will be using ?
-# which gemini models we will be using ?
-
 from crewai import Agent
 from .tools import tool 
 from dotenv import load_dotenv
@@ -9,23 +6,23 @@ load_dotenv()
 from langchain_google_genai import ChatGoogleGenerativeAI
 import os 
 
-# Custom LLM wrapper to fix litellm compatibility
+
 class CustomGoogleLLM:
     def __init__(self):
-        self.model = "gemini-1.5-flash"
+        self.model = "gemini-pro"  # Using gemini-pro model
+        api_key = os.getenv("GEMINI_API_KEY")
+        if not api_key:
+            raise ValueError("GEMINI_API_KEY not found in environment variables!")
+        print(f"Using API Key: {api_key[:5]}... (first 5 chars)")  # Debug output
+        print(f"Model: {self.model}")
         self.llm = ChatGoogleGenerativeAI(
-            model="gemini-1.5-flash",
+            model="gemini-pro",
             verbose=True,
             temperature=0.5,
             google_api_key=os.getenv("GEMINI_API_KEY")
         )
 
     def call(self, messages, stop = None , **kwargs):
-        # Convert CrewAI's message format to LangChain's and invoke
-        #from langchain_core.messages import HumanMessage
-        #langchain_messages = [HumanMessage(content=m["content"]) if m["role"] == "user" else m for m in messages]
-        #response = self.llm.invoke(langchain_messages)
-        #return response.content
 
         from langchain_core.messages import HumanMessage, AIMessage
         # Convert CrewAI messages to LangChain format
@@ -35,12 +32,12 @@ class CustomGoogleLLM:
                 langchain_messages.append(HumanMessage(content=m["content"]))
             elif m["role"] == "assistant":
                 langchain_messages.append(AIMessage(content=m["content"]))
-        # Call LangChain LLM
+
         response = self.llm.invoke(langchain_messages)
         return response.content
 
 llm = CustomGoogleLLM()
-## code for llm completed ##
+
 
 Researcher_Analyst = Agent(
 

@@ -1,21 +1,6 @@
 import sys
 import os
 
-project_root = "C:/Users/Hp/Projects/Timeseriesproject"
-sys.path.append(project_root)
-
-# Debug: Print the sys.path to see where Python is looking for modules
-print("sys.path:", sys.path)
-
-# Debug: Check if the aiagent directory exists in the project root
-aiagent_path = os.path.join(project_root, "aiagent")
-print("aiagent directory exists:", os.path.exists(aiagent_path))
-
-# Debug: Check if executor.py exists
-executor_path = os.path.join(project_root, "aiagent", "executer.py")
-print("executer.py exists:", os.path.exists(executor_path))
-
-# Now try the import
 from aiagent.executer import run_agent_crew
 
 import streamlit as st
@@ -58,7 +43,7 @@ sensor_17 = st.number_input("sensor_17", min_value=0.0, max_value=100.0, value=5
 
 
 if st.button("Predict RUL"):
-    # Create a DataFrame with user inputs and default values
+    # Createing a DataFrame with user inputs and default values
     input_data = pd.DataFrame([mean_values], columns=df.columns)
     input_data['times_in_cycles'] = times_in_cycles
     input_data['ops_1'] = ops_1
@@ -67,7 +52,6 @@ if st.button("Predict RUL"):
     input_data['sensor_9'] = sensor_9
     input_data['sensor_17'] = sensor_17
 
-    # Drop RUL column if present
     if 'RUL' in input_data.columns:
         input_data = input_data.drop(columns=['RUL'])
 
@@ -80,24 +64,25 @@ if st.button("Predict RUL"):
 
 
 if st.button("Predict RUL"):
-    # ... (existing code to predict)
+ 
     st.success(f"Predicted RUL: {prediction[0]:.2f} cycles")
     
-    # Optional: Trigger agents right after prediction
-    run_agents = st.checkbox("Get Analysis by AI Agents")
+
+
+    st.header("2. AI Agent Analysis")
+    st.write(f"Run analysis for the predicted RUL of {st.session_state.predicted_rul:.2f} cycles?")
     
+ 
+    run_agents = st.checkbox("Get Analysis by AI Agents", key="run_agents_checkbox") 
+                                                              
     if run_agents:
-        with st.spinner("Running AI agents for failure analysis and mitigation strategies..."):
-            agent_output = run_agent_crew(str(round(prediction[0])))
-        st.subheader("AI Agent Insights")
-        st.markdown(agent_output)
-
-
-
-
-#import sys
-#print('\n\n\n')
-#print(f"Python executable: {sys.executable}")
-
-#print(f"Python version: {sys.version}")
-#print('\n\n\n')
+        if st.session_state.predicted_rul is not None:
+            with st.spinner("Running AI agents for failure analysis and mitigation strategies..."):
+                # Use the stored prediction value from session state
+                agent_output = run_agent_crew(str(round(st.session_state.predicted_rul))) 
+            st.subheader("AI Agent Insights")
+            st.markdown(agent_output)
+        else:
+            st.warning("Please predict RUL first.")
+        
+    
