@@ -1,8 +1,8 @@
 
-from crewai import Task
+from crewai import Task 
 from .tools import tool 
 from .agents import Researcher_Analyst, Analyst_expert
- 
+
 # Research Task 
 research_task = Task(
 
@@ -32,4 +32,3 @@ Analysis_task = Task(
     output_file= 'Analysis_output.md' # Example of output customization
 
 )
-
