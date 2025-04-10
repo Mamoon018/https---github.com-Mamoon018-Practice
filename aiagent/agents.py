@@ -1,11 +1,15 @@
 import os 
 from crewai import Agent 
 from dotenv import load_dotenv
-load_dotenv()
-from .tools import tool 
+load_dotenv(dotenv_path='aiagent\.env')
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 ## now, we will call the gemini model
+
+gemini_api_key = os.getenv("GEMINI_API_KEY")
+if not gemini_api_key:
+    raise ValueError("GEMINI_API_KEY not found in .env")
+os.environ["GOOGLE_API_KEY"] = gemini_api_key
 
 llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash",
                              verbose=True,
@@ -25,9 +29,9 @@ Researcher_Analyst = Agent(
         "cases based on the {RUL} cycles, and come up with most common reasons engine fails "
  
     ),
-    tools = [tool],
+    tools = [],
     llm = llm,
-    allow_delegation = True
+    allow_delegation = False
 
 )
 
@@ -46,7 +50,7 @@ Analyst_expert = Agent(
         "and based on that write the possible actions that can improve the remaining usability cycle of engine"
 
     ),
-    tools = [tool],
+    tools = [],
     llm = llm,
     allow_delegation = False
 

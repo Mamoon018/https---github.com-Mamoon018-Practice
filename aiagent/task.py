@@ -1,6 +1,5 @@
 
 from crewai import Task 
-from .tools import tool 
 from .agents import Researcher_Analyst, Analyst_expert
 
 # Research Task 
@@ -11,7 +10,7 @@ research_task = Task(
         "cases based on the {RUL} cycles, and come up with most common reasons engine fails "
     ),
     expected_output= "At least 5 reasons related to the engine failure after {RUL} cycles",
-    tools= [tool],
+    tools= [],
     agent = Researcher_Analyst,
 
 )
