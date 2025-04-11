@@ -69,17 +69,24 @@ if st.button("Predict RUL"):
         tasks=[research_task, Analysis_task],
         process=Process.sequential
     )
-    # Run Crew and capture individual task outputs
-    with st.spinner("Running AI agents..."):
-        # Execute tasks manually to capture outputs
-        research_output = research_task.execute(context={'RUL': predicted_rul})
-        analysis_output = Analysis_task.execute(context={'RUL': predicted_rul})
-
-    # Display results
-    st.subheader("Reasons for Engine Failure")
-    st.write(research_output)  # Display research task output
+    # AI Agent Analysis Section (only shown after prediction)
+if "predicted_rul" in st.session_state:
+    st.header("AI Agent Analysis")
     
-    st.subheader("Mitigation Strategies")
-    st.write(analysis_output)  # Display analysis task output
-    logging.info(f"AI Agent Results - Reasons: {research_output}")
-    logging.info(f"AI Agent Results - Strategies: {analysis_output}")
+    # Checkbox for Reasons
+    show_reasons = st.checkbox("Reasons of Possible Failure")
+    if show_reasons:
+        with st.spinner("Generating reasons..."):
+            research_output = research_task.execute(context={'RUL': st.session_state.predicted_rul})
+        st.subheader("Reasons for Engine Failure")
+        st.write(research_output)
+        logging.info(f"AI Agent Results - Reasons: {research_output}")
+
+    # Checkbox for Strategies
+    show_strategies = st.checkbox("Strategies to Avoid Possible Failure")
+    if show_strategies:
+        with st.spinner("Generating strategies..."):
+            analysis_output = Analysis_task.execute(context={'RUL': st.session_state.predicted_rul})
+        st.subheader("Mitigation Strategies")
+        st.write(analysis_output)
+        logging.info(f"AI Agent Results - Strategies: {analysis_output}")
