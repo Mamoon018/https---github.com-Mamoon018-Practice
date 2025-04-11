@@ -71,7 +71,6 @@ if st.button("Predict RUL"):
     )
     # AI Agent Analysis Section (only shown after prediction)
 if "predicted_rul" in st.session_state:
-    st.header("AI Agent Analysis")
     
     # Checkbox for Reasons
     show_reasons = st.checkbox("Reasons of Possible Failure")
