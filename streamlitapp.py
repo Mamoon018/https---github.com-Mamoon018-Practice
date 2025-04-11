@@ -1,16 +1,13 @@
 import sys
 import os
-
-from aiagent.executer import run_agent_crew
-
 import streamlit as st
 import pandas as pd
 import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
 import joblib
-import plotly.express as px
 from src.logger import logging
+from crewai import Crew, Process 
+from aiagent.agents import Researcher_Analyst, Analyst_expert
+from aiagent.task import research_task, Analysis_task
 
 
 project_root = "C:/Users/Hp/Projects/Timeseriesproject"
@@ -56,60 +53,33 @@ if st.button("Predict RUL"):
     if 'RUL' in input_data.columns:
         input_data = input_data.drop(columns=['RUL'])
 
-    # Apply the preprocessor
+# preprocessing & prediction
     input_processed = preprocessor.transform(input_data)
-
-# Make prediction
     prediction = model.predict(input_processed)
-    st.session_state.predicted_rul = prediction[0]  # Store prediction in session state
-    st.success(f"Predicted RUL: {prediction[0]:.2f} cycles")
-    logging.info(f"Predicted RUL: {prediction[0]:.2f}")
+    predicted_rul = f"{prediction[0]:.2f} cycles"
+    st.session_state.predicted_rul = predicted_rul  # Store in session state
+    st.success(f"Predicted RUL: {predicted_rul}")
 
-# AI Agent Analysis Section
-if st.button("Show Analysis", key="analysis_button"):
-    if 'predicted_rul' in st.session_state:
-        st.success(f"Predicted RUL: {st.session_state.predicted_rul:.2f} cycles")
-        st.header("2. AI Agent Analysis")
-        st.write(f"Run analysis for the predicted RUL of {st.session_state.predicted_rul:.2f} cycles?")
-        
-        # Checkbox to trigger agent analysis
-        run_agents = st.checkbox("Get Analysis by AI Agents", key="run_agents_checkbox")
-        
-        if run_agents:
-            with st.spinner("Running AI agents for failure analysis and mitigation strategies..."):
-                try:
-                    # Log and display the input
-                    rul_input = str(round(st.session_state.predicted_rul))
-                    logging.info(f"Calling run_agent_crew with input: {rul_input}")
-                    st.write(f"Debug: Calling run_agent_crew with input: {rul_input}")
-                    
-                    # Run the agent crew
-                    agent_results = run_agent_crew(rul_input)
-                    logging.info(f"run_agent_crew returned: {agent_results}")
-                    
-                    # Debug: Show raw output
-                    st.write(f"Debug: Raw agent_results: {agent_results}")
-                    st.write(f"Debug: Type of agent_results: {type(agent_results)}")
-                    
-                    # Extract and display individual outputs
-                    research_output = agent_results.get("research_output", "No research output available.")
-                    analysis_output = agent_results.get("analysis_output", "No analysis output available.")
-                    
-                    if research_output == "No output from research task." and analysis_output == "No output from analysis task.":
-                        st.warning("No meaningful output received from AI agents.")
-                        logging.warning("Both agent outputs are empty.")
-                    else:
-                        # Display research output
-                        st.subheader("Research Analyst Insights")
-                        st.markdown("**Reasons for Engine Failure:**")
-                        st.markdown(research_output)
-                        
-                        # Display analysis output
-                        st.subheader("Senior Analyst Recommendations")
-                        st.markdown("**Mitigation Strategies:**")
-                        st.markdown(analysis_output)
-                except Exception as e:
-                    st.error(f"Error running AI agents: {str(e)}")
-                    logging.error(f"Exception in run_agent_crew: {str(e)}")
-    else:
-        st.warning("Please predict RUL first.")
+    # Log the prediction
+    logging.info(f"Predicted RUL: {predicted_rul}")
+
+    st.header("AI Agent Analysis")
+    crew = Crew(
+        agents=[Researcher_Analyst, Analyst_expert],
+        tasks=[research_task, Analysis_task],
+        process=Process.sequential
+    )
+    # Run Crew and capture individual task outputs
+    with st.spinner("Running AI agents..."):
+        # Execute tasks manually to capture outputs
+        research_output = research_task.execute(context={'RUL': predicted_rul})
+        analysis_output = Analysis_task.execute(context={'RUL': predicted_rul})
+
+    # Display results
+    st.subheader("Reasons for Engine Failure")
+    st.write(research_output)  # Display research task output
+    
+    st.subheader("Mitigation Strategies")
+    st.write(analysis_output)  # Display analysis task output
+    logging.info(f"AI Agent Results - Reasons: {research_output}")
+    logging.info(f"AI Agent Results - Strategies: {analysis_output}")
