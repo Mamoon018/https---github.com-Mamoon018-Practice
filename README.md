@@ -1,3 +1,6 @@
+
+-- Demo Video: https://www.linkedin.com/feed/update/urn:li:activity:7316461739926069248/
+
 # AI Agents Module
 
 ## Overview
@@ -5,14 +8,12 @@ The `agents.py` file defines two AI agents, `Researcher_Analyst` and `Analyst_ex
 
 ## Dependencies
 This module relies on the following:
-- **`crewai`**: For creating and managing AI agents.
-- **`langchain_google_genai`**: To integrate with the Google Gemini-Pro language model.
-- **`dotenv`**: For loading environment variables from the `.env` file.
-
-Ensure the `.env` file contains the `GEMINI_API_KEY` for accessing the Gemini-Pro model.
+- **`crewai`**: For creating and managing AI agents
+- **`langchain_google_genai`**: To integrate with the Google Gemini-Pro language model
+- **`dotenv`**: For loading environment variables from the `.env` file
 
 ## Tools
-Currently, no external tools are assigned to the agents. However, the framework supports tool integration, such as web search or data retrieval tools, which can be added to enhance the agents' capabilities.
+Currently, Web searcher tool SERPER SEARCH is assigned to the agents. The framework supports tool integration, such as web search or data retrieval tools, which enhances the agents' capabilities.
 
 ## Agents
 ### 1. `Researcher_Analyst`
@@ -21,8 +22,8 @@ Currently, no external tools are assigned to the agents. However, the framework 
 - **Features**:
   - Verbose output for detailed responses.
   - Memory-enabled for context retention.
-  - No delegation or external tools.
-- **Backstory**: A researcher skilled in gathering information related to engine failures based on RUL cycles.
+  - Usage of external tool.
+- **Backstory**: A researcher skilled in gathering information related to engine failures based on RUL cycles from web search.
 
 ### 2. `Analyst_expert`
 - **Role**: Senior Analyst.
@@ -30,7 +31,7 @@ Currently, no external tools are assigned to the agents. However, the framework 
 - **Features**:
   - Verbose output for detailed recommendations.
   - Memory-enabled for context retention.
-  - No delegation or external tools.
+  - Analysis of the collected data of web search to analyze and recommend mitigation strategies.
 - **Backstory**: An expert in airplane engines, capable of analyzing sensor data to suggest actionable improvements.
 
 ## Tasks
@@ -47,5 +48,5 @@ The agents are designed to perform the following tasks:
 
 These tasks are executed sequentially to provide a comprehensive analysis of engine performance and improvement strategies.
 
-## Summary
-The `agents.py` module is a critical part of the AI system, defining specialized agents to address engine failure analysis and RUL improvement. By leveraging the Gemini-Pro language model, these agents deliver precise and actionable insights. The modular design allows for easy integration of additional tools and tasks, making it a flexible and scalable solution for engine diagnostics and optimization.
+**Summary**:
+AI system, defining specialized agents to address engine failure analysis and RUL improvement. By leveraging the Gemini-Pro language model, these agents deliver precise and actionable insights. The modular design allows for easy integration of additional tools and tasks, making it a flexible and scalable solution for engine diagnostics and optimization.
